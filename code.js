@@ -35,6 +35,12 @@ class Path{
     }
     drawSelf(ctx, cw){
         this.angleChange += this.angleChangeChange;
+        if (this.angleChange < Math.PI/-3) {
+            this.angleChange = Math.PI/-3;
+        }
+        if (this.angleChange > Math.PI/3) {
+            this.angleChange = Math.PI/3;
+        }
         this.angle += this.angleChange;
         ctx.lineWidth = cw/200;
         lctx.lineWidth = cw/200;
@@ -61,6 +67,18 @@ class Path{
         ctx.stroke();
         lctx.lineTo(this.x, this.y);
         lctx.stroke();
+        if (this.x < mcw*-0.25) {
+            this.delete();
+        }
+        if (this.x > mcw*1.25) {
+            this.delete();
+        }
+        if (this.y < mch*-0.25) {
+            this.delete();
+        }
+        if (this.y > mch*1.25) {
+            this.delete();
+        }
     }
 }
 
@@ -70,7 +88,9 @@ function colorString(r, g, b, a){
 }
 
 let paths = [];
-new Path({x: mcw/2, y: mch/2, color: [Math.random(), Math.random(), Math.random()], colorChange: [Math.random()/90-1/180, Math.random()/90-1/180, Math.random()/90-1/180], angle: 0, angleChange: (Math.random()/10-1/20)*Math.PI, angleChangeChange: (Math.random()/1000-1/2000)*Math.PI, branchProb: 1/300});
+for (let i=0; i<Math.floor(Math.random()*5+1); i++) {
+    new Path({x: mcw*(Math.random()*0.5+0.25), y: mch*(Math.random()*0.5+0.25), color: [Math.random(), Math.random(), Math.random()], colorChange: [Math.random()/90-1/180, Math.random()/90-1/180, Math.random()/90-1/180], angle: 0, angleChange: (Math.random()/10-1/20)*Math.PI, angleChangeChange: (Math.random()/1000-1/2000)*Math.PI, branchProb: Math.random()/300+1/300});
+}
 
 function drawingLoop(){
     let imgdt = mctx.getImageData(0, 0, mcw, mch);
